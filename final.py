@@ -18,11 +18,11 @@ import zipfile
 client_id = st.secrets["CLIENT_ID"]
 client_secret = st.secrets["CLIENT_SECRET"]
 tenant_id = st.secrets["TENANT_ID"]
-authority_url = f'https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/authorize'
-#redirect_uri = st.secrets["URL"]
+authority_url = f'https://login.microsoftonline.com/{tenant_id}'
+redirect_uri = st.secrets["URL"]
  
 # Define the scopes required for accessing SharePoint
-scopes = ["Files.ReadWrite.All", "Sites.Read.All", "User.Read", "offline_access", "openid", "profile"]
+scopes = ['User.Read','Files.ReadWrite.All', 'Sites.Read.All']
  
 # MSAL configuration
 app = msal.ConfidentialClientApplication(
@@ -37,12 +37,12 @@ st.title("📂 SharePoint File Downloader and Query Chatbot")
 # Authentication flow
 def get_auth_url():
     auth_url = app.get_authorization_request_url(
-        scopes, redirect_uri='https://chatbot-novintix.streamlit.app')
+        scopes, redirect_uri=redirect_uri)
     return auth_url
  
 def get_token_from_code(auth_code):
     result = app.acquire_token_by_authorization_code(
-        auth_code, scopes=scopes, redirect_uri='https://chatbot-novintix.streamlit.app')
+        auth_code, scopes=scopes, redirect_uri=redirect_uri)
     return result
  
 # Cache the authentication headers
@@ -536,5 +536,3 @@ if 'auth_code' not in st.session_state and 'code' in st.query_params:
 if 'auth_url' in st.query_params:
     st.markdown(
         f'<meta http-equiv="refresh" content="0; url={st.query_params["auth_url"]}">', unsafe_allow_html=True)
-
- 
