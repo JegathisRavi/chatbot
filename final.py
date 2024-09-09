@@ -22,7 +22,7 @@ authority_url = f'https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/auth
 #redirect_uri = st.secrets["URL"]
  
 # Define the scopes required for accessing SharePoint
-scopes = ['User.Read','Files.ReadWrite.All', 'Sites.Read.All']
+scopes = ["Files.ReadWrite.All", "Sites.Read.All", "User.Read", "offline_access", "openid", "profile"]
  
 # MSAL configuration
 app = msal.ConfidentialClientApplication(
