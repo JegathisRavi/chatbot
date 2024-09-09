@@ -18,7 +18,7 @@ import zipfile
 client_id = st.secrets["CLIENT_ID"]
 client_secret = st.secrets["CLIENT_SECRET"]
 tenant_id = st.secrets["TENANT_ID"]
-authority_url = f'https://login.microsoftonline.com/{tenant_id}'
+authority_url = f'https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/authorize'
 #redirect_uri = st.secrets["URL"]
  
 # Define the scopes required for accessing SharePoint
