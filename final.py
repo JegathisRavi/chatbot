@@ -18,17 +18,17 @@ import zipfile
 client_id = st.secrets["CLIENT_ID"]
 client_secret = st.secrets["CLIENT_SECRET"]
 tenant_id = st.secrets["TENANT_ID"]
-authority_url = f'https://login.microsoftonline.com/{tenant_id}'
+authority_url = f"https://login.microsoftonline.com/{tenant_id}"
 redirect_uri = st.secrets["URL"]
  
 # Define the scopes required for accessing SharePoint
-scopes = ['User.Read','Files.ReadWrite.All', 'Sites.Read.All']
+scopes=["Files.ReadWrite.All", "Sites.Read.All", "User.Read"]
  
 # MSAL configuration
 app = msal.ConfidentialClientApplication(
     client_id,
-    authority=authority_url,
-    client_credential=client_secret
+    authority=authority,
+    client_credential=client_secret,
 )
  
 # Streamlit UI
@@ -37,7 +37,7 @@ st.title("📂 SharePoint File Downloader and Query Chatbot")
 # Authentication flow
 def get_auth_url():
     auth_url = app.get_authorization_request_url(
-        scopes, redirect_uri=redirect_uri)
+        scopes=scopes, redirect_uri=redirect_uri)
     return auth_url
  
 def get_token_from_code(auth_code):
