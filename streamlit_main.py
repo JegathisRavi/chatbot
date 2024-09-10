@@ -41,10 +41,12 @@ def get_auth_url():
         redirect_uri=redirect_uri,
         state=st.session_state.get("state", "")
     )
-    st.write(f"Debug: Auth URL is {auth_url}")  # Debug logging
+    st.write(f"Debug: Auth URL is {auth_url}")
+    st.write(f"Debug: Redirect URI is {redirect_uri}")
     return auth_url
 
 def get_token_from_code(auth_code):
+    st.write(f"Debug: Attempting to acquire token with auth code: {auth_code[:10]}...")
     result = app.acquire_token_by_authorization_code(
         auth_code, 
         scopes=scopes, 
@@ -52,8 +54,14 @@ def get_token_from_code(auth_code):
     )
     if "error" in result:
         st.error(f"Error in token acquisition: {result.get('error_description', 'Unknown error')}")
+    else:
+        st.success("Token acquired successfully!")
     return result
-
+error = st.experimental_get_query_params().get("error")
+error_description = st.experimental_get_query_params().get("error_description")
+if error:
+    st.error(f"Authentication Error: {error[0]}")
+    st.error(f"Error Description: {error_description[0]}")
 # Cache the authentication headers
 @st.cache_resource
 def get_auth_headers(auth_code=None):
